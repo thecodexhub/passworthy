@@ -1,18 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'package:passworthy/app/app.dart';
+import 'package:passworthy/bootstrap.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Passworthy DEV'),
-      ),
-    );
-  }
+void main() async {
+  unawaited(
+    bootstrap(() async => const App()),
+  );
 }
