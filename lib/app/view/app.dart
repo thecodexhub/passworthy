@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:passworthy/l10n/l10n.dart';
 
 /// {@template app}
 /// Entry point of the application. This is the first widget that
@@ -23,12 +24,28 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Passworthy',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Passworthy'),
-        ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: PlaceholderWidget(),
+    );
+  }
+}
+
+/// {@template placeholder_widget}
+/// A placeholder widget with [Scaffold] and an [AppBar].
+/// {@endtemplate}
+class PlaceholderWidget extends StatelessWidget {
+  /// {@macro placeholder_widget}
+  const PlaceholderWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.homeAppBarTitle),
       ),
     );
   }
