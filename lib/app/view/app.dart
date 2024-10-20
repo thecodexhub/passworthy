@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:passworthy/app/env/env.dart';
 import 'package:passworthy/l10n/l10n.dart';
 
 /// {@template app}
@@ -25,7 +24,6 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Env.placeholder);
     return const MaterialApp(
       title: 'Passworthy',
       localizationsDelegates: AppLocalizations.localizationsDelegates,

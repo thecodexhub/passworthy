@@ -3,7 +3,7 @@ description: Simple yet secured password manager application built with Flutter.
 homepage: https://github.com/thecodexhub/passworthy
 version: 1.0.0+1
 
-publish_to: 'none'
+publish_to: "none"
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -11,16 +11,18 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.8
+  dio: ^5.7.0
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   intl: ^0.19.0
+  sentry_flutter: ^8.9.0
 
 dev_dependencies:
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
