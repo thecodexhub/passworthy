@@ -1,0 +1,23 @@
+/// {@template in_memory_cache_client}
+/// An in-memory cache client made for Dart.
+/// {@endtemplate}
+class InMemoryCacheClient {
+  /// {@macro in_memory_cache_client}
+  InMemoryCacheClient() : _cache = <String, Object>{};
+
+  final Map<String, Object> _cache;
+
+  /// Writes the [key] and [value] pair into the cache.
+  void write<T extends Object>({required String key, required T value}) {
+    _cache[key] = value;
+  }
+
+  /// Find the value for the specified key.
+  ///
+  /// If the value is not found, it returns `null`.
+  T? read<T extends Object>({required String key}) {
+    final value = _cache[key];
+    if (value is T) return value;
+    return null;
+  }
+}
