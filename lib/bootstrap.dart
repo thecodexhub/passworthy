@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:passworthy/app_provider_observer.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// The type definition for the builder widget.
@@ -26,5 +28,10 @@ Future<void> bootstrap(BootstrapBuilder builder) async {
     return true;
   };
 
-  runApp(await builder());
+  runApp(
+    ProviderScope(
+      observers: [AppProviderObserver()],
+      child: await builder(),
+    ),
+  );
 }
