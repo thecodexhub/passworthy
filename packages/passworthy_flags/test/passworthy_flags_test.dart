@@ -1,3 +1,4 @@
+import 'package:fake_async/fake_async.dart';
 import 'package:flagsmith/flagsmith.dart';
 import 'package:in_memory_cache/in_memory_cache.dart';
 import 'package:mocktail/mocktail.dart';
@@ -37,11 +38,17 @@ void main() {
       flagsmithClient = MockFlagsmithClient();
 
       when(() => flagsmithClient.initialize()).thenAnswer((_) async {});
+      when(() => flagsmithClient.getFeatureFlags()).thenAnswer(
+        (_) async => [flag],
+      );
 
       when(() => flag.enabled).thenReturn(true);
-      when(() => flagsmithClient.stream(any())).thenAnswer(
-        (_) => Stream.value(flag),
-      );
+      when(
+        () => flagsmithClient.isFeatureFlagEnabled(
+          any(),
+          reload: true,
+        ),
+      ).thenAnswer((_) async => true);
 
       passworthyFlags = createSubject(
         flagsmithApiKey: apiKey,
@@ -70,24 +77,52 @@ void main() {
     });
 
     group('isKillSwitchEnabledStream', () {
-      test('emits false when the flagsmith client stream returns null', () {
-        when(() => flagsmithClient.stream(any())).thenAnswer((_) => null);
-        expect(passworthyFlags.isKillSwitchEnabledStream, emits(false));
-
+      test('emits true when the kill switch key is enabled', () async {
+        final actual = await passworthyFlags.isKillSwitchEnabledStream().first;
+        expect(actual, isTrue);
         verify(
-          () => flagsmithClient.stream(FlagsmithKeys.killSwitchFlagKey),
+          () => flagsmithClient.isFeatureFlagEnabled(
+            FlagsmithKeys.killSwitchFlagKey,
+            reload: true,
+          ),
         ).called(1);
       });
 
-      test('emits correct result from the flagsmith client stream', () {
-        expect(passworthyFlags.isKillSwitchEnabledStream, emits(true));
+      test('emits false when the kill switch key is disabled', () async {
+        when(
+          () => flagsmithClient.isFeatureFlagEnabled(
+            any(),
+            reload: true,
+          ),
+        ).thenAnswer((_) async => false);
+
+        final actual = await passworthyFlags.isKillSwitchEnabledStream().first;
+        expect(actual, isFalse);
         verify(
-          () => flagsmithClient.stream(FlagsmithKeys.killSwitchFlagKey),
+          () => flagsmithClient.isFeatureFlagEnabled(
+            FlagsmithKeys.killSwitchFlagKey,
+            reload: true,
+          ),
         ).called(1);
+      });
+
+      test('emits the reloaded value again in 30 seconds', () async {
+        fakeAsync((async) {
+          final stream = passworthyFlags.isKillSwitchEnabledStream();
+          final streamListener = stream.listen(
+            expectAsync1(
+              (value) => expect(value, isTrue),
+              count: 2,
+            ),
+          );
+
+          async.elapse(const Duration(seconds: 59));
+          streamListener.cancel();
+        });
       });
 
       test('caches the result into in memory cache client', () async {
-        await passworthyFlags.isKillSwitchEnabledStream.first;
+        await passworthyFlags.isKillSwitchEnabledStream().first;
         verify(
           () => cacheClient.write(
             key: PassworthyFlags.killSwitchCacheKey,
