@@ -33,9 +33,7 @@ class PlaceholderWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final res = ref.watch(
-      killSwitchStreamProvider(ref.watch(flagsProvider).value),
-    );
+    final res = ref.watch(killSwitchStreamProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.homeAppBarTitle),

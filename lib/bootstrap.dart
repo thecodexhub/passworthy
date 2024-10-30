@@ -12,7 +12,10 @@ typedef BootstrapBuilder = FutureOr<Widget> Function();
 
 /// Bootstrap is responsible for any common setup and calls
 /// [runApp] with the widget returned by [builder] in an error zone.
-Future<void> bootstrap(BootstrapBuilder builder) async {
+Future<void> bootstrap(
+  BootstrapBuilder builder, {
+  List<Override> overrides = const [],
+}) async {
   // Capture in Sentry and log all uncaught build phase errors
   // from the framework
   FlutterError.onError = (details) {
@@ -31,6 +34,7 @@ Future<void> bootstrap(BootstrapBuilder builder) async {
   runApp(
     ProviderScope(
       observers: [AppProviderObserver()],
+      overrides: overrides,
       child: await builder(),
     ),
   );
