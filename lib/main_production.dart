@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:passworthy/app/app.dart';
 import 'package:passworthy/bootstrap.dart';
 import 'package:passworthy/env/env.dart';
-import 'package:passworthy_flags/passworthy_flags.dart';
+import 'package:remote_flags_config/remote_flags_config.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
@@ -39,14 +39,17 @@ Future<void> main() async {
     },
   );
 
-  // * Initialize Passworthy Flags
-  final passworthyFlags = PassworthyFlags(flagsmithApiKey: Env.flagsmithApiKey);
-  await passworthyFlags.init();
+  // * Initialize Remote Flags Config
+  final remoteFlagsConfig = await FlagsmithRemoteFlagsConfig.initialize(
+    apiKey: Env.flagsmithApiKey,
+  );
 
   unawaited(
     bootstrap(
       () async => const App(),
-      overrides: [flagsProvider.overrideWithValue(passworthyFlags)],
+      overrides: [
+        remoteFlagsConfigProvider.overrideWithValue(remoteFlagsConfig),
+      ],
     ),
   );
 }

@@ -1,19 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:passworthy/app/app.dart';
-import 'package:passworthy_flags/passworthy_flags.dart';
+import 'package:remote_flags_config/remote_flags_config.dart';
 
 import '../../helpers/pump_app.dart';
 
-class MockPassworthyFlags extends Mock implements PassworthyFlags {}
+class MockRemoteFlagsConfig extends Mock implements RemoteFlagsConfig {}
 
 void main() {
   group('App', () {
-    late PassworthyFlags passworthyFlags;
+    late RemoteFlagsConfig remoteFlagsConfig;
 
     setUp(() {
-      passworthyFlags = MockPassworthyFlags();
-      when(() => passworthyFlags.isKillSwitchEnabledStream()).thenAnswer(
+      remoteFlagsConfig = MockRemoteFlagsConfig();
+      when(() => remoteFlagsConfig.killSwitchStream()).thenAnswer(
         (_) => Stream.value(false),
       );
     });
@@ -34,7 +34,7 @@ void main() {
     testWidgets(
       'renders true/false text when the flags provider is loaded',
       (tester) async {
-        await tester.pumpApp(const App(), passworthyFlags: passworthyFlags);
+        await tester.pumpApp(const App(), remoteFlagsConfig: remoteFlagsConfig);
         await tester.pumpAndSettle();
         expect(find.text('false'), findsOne);
       },

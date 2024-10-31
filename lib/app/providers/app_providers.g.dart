@@ -6,7 +6,7 @@ part of 'app_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$killSwitchStreamHash() => r'3a61c213122971eeef183aa6815018fcfe39b39d';
+String _$killSwitchStreamHash() => r'33eadba227c2d6def9a6354678ef25360d84ae95';
 
 /// Provider for stream of [bool] which will emit the value of kill switch key.
 ///
@@ -25,23 +25,27 @@ final killSwitchStreamProvider = AutoDisposeStreamProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef KillSwitchStreamRef = AutoDisposeStreamProviderRef<bool>;
-String _$flagsHash() => r'b05abb6d6742d1f23aa81e3da0bf0571281faec3';
+String _$remoteFlagsConfigHash() => r'21bd5acedd9f132b49ef9e551054a1788eee4c02';
 
 /// Provider for the feature flagging.
+/// Async initialization will be done with the flags provider.
+/// https://riverpod.dev/docs/concepts/scopes#initialization-of-synchronous-provider-for-async-apis
 ///
-/// Copied from [flags].
-@ProviderFor(flags)
-final flagsProvider = AutoDisposeProvider<PassworthyFlags>.internal(
-  flags,
-  name: r'flagsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$flagsHash,
+/// Copied from [remoteFlagsConfig].
+@ProviderFor(remoteFlagsConfig)
+final remoteFlagsConfigProvider =
+    AutoDisposeProvider<RemoteFlagsConfig>.internal(
+  remoteFlagsConfig,
+  name: r'remoteFlagsConfigProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$remoteFlagsConfigHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef FlagsRef = AutoDisposeProviderRef<PassworthyFlags>;
+typedef RemoteFlagsConfigRef = AutoDisposeProviderRef<RemoteFlagsConfig>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
