@@ -17,7 +17,7 @@ Future<void> main() async {
     (options) {
       options
         ..dsn = Env.sentryDsn
-        ..environment = 'development'
+        ..environment = 'production'
         // Improve stack traces in the dashboard
         ..considerInAppFramesByDefault = false
         ..addInAppInclude('passworthy')
