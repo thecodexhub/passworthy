@@ -1,0 +1,22 @@
+name: authentication_repository
+description: Dart package that manages authentication domain for Passworthy app.
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: 3.24.3
+
+dependencies:
+  equatable: ^2.0.5
+  flutter:
+    sdk: flutter
+  in_memory_cache:
+    path: ../in_memory_cache
+  supabase: ^2.5.0
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
