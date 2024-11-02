@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +9,7 @@ import 'package:passworthy/bootstrap.dart';
 import 'package:passworthy/env/env.dart';
 import 'package:remote_flags_config/remote_flags_config.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,11 +46,18 @@ Future<void> main() async {
     apiKey: Env.flagsmithApiKey,
   );
 
+  // * Initialize Supabase and Client
+  await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
+  final authRepository = AuthenticationRepository(
+    supabaseClient: Supabase.instance.client,
+  );
+
   unawaited(
     bootstrap(
       () async => const App(),
       overrides: [
         remoteFlagsConfigProvider.overrideWithValue(remoteFlagsConfig),
+        authRepositoryProvider.overrideWithValue(authRepository),
       ],
     ),
   );

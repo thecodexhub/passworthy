@@ -6,4 +6,11 @@ class Env {
   /// Flagsmith API Key Value
   static String get flagsmithApiKey =>
       const String.fromEnvironment('FLAGSMITH_API_KEY');
+
+  /// Supabase URL value
+  static String get supabaseUrl => const String.fromEnvironment('SUPABASE_URL');
+
+  /// Supabase Anon Key value
+  static String get supabaseAnonKey =>
+      const String.fromEnvironment('SUPABASE_ANON_KEY');
 }
