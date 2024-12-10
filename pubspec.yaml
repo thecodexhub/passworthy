@@ -24,7 +24,7 @@ dependencies:
   remote_flags_config:
     path: packages/remote_flags_config
   riverpod_annotation: ^2.6.1
-  sentry_flutter: ^8.9.0
+  sentry_flutter: ^8.11.0
   supabase_flutter: ^2.8.0
 
 dev_dependencies:
